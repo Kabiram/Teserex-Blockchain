@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TX Console - Teserex Blockchain</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .scrollable {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/tx_console">TX Console</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="/marketplace">Marketplace</a></li>
+      <li class="nav-item"><a class="nav-link" href="/create_listing">Create Listing</a></li>
+      <li class="nav-item"><a class="nav-link" href="/blocks" target="_blank">View Full Blockchain</a></li>
+      <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container mt-4">
+  <!-- Extra navigation buttons -->
+  <div class="mb-3">
+    <a href="/marketplace" class="btn btn-primary">Marketplace</a>
+    <a href="/create_listing" class="btn btn-success">Create Listing</a>
+  </div>
+
+  <h2>Account Details</h2>
+  <p><strong>DID:</strong> {{ did }}</p>
+  <p><strong>Balance:</strong> {{ balance }}</p>
+
+  <h3>Recent Transactions</h3>
+  <div class="scrollable">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>TX #</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Amount</th>
+          <th>Fee</th>
+          <th>TXID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tx in tx_history %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ tx.sender }}</td>
+          <td>{{ tx.receiver }}</td>
+          <td>{{ tx.amount }}</td>
+          <td>{{ tx.fee }}</td>
+          <td>{{ tx.txid }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Search Transaction</h3>
+  <form method="GET" action="/search_tx">
+    <div class="form-group">
+      <input type="text" name="txid" class="form-control" placeholder="Enter Transaction ID" required>
+    </div>
+    <button type="submit" class="btn btn-info">Search</button>
+  </form>
+
+  <h3>Send Transaction</h3>
+  <form method="POST" action="/send_transaction">
+    <div class="form-group">
+      <label>To</label>
+      <input type="text" name="receiver" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Amount</label>
+      <input type="number" step="0.001" name="amount" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <input type="text" name="message" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Send Transaction</button>
+  </form>
+
+  <h3>Deploy Contract</h3>
+  <form action="/deploy_contract" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label>Contract Path:</label>
+      <input type="text" name="contract_path" class="form-control" placeholder="/path/to/contract.wasm">
+    </div>
+    <div class="form-group">
+      <label>Contract Name:</label>
+      <input type="text" name="contract_name" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-secondary">Deploy</button>
+  </form>
+
+  <h3>Invoke Contract</h3>
+  <form method="POST" action="/invoke_contract">
+    <div class="form-group">
+      <label>Contract Hash:</label>
+      <input type="text" name="contract_hash" class="form-control" placeholder="Paste the contract hash here" required>
+    </div>
+    <div class="form-group">
+      <label>Function Name:</label>
+      <input type="text" name="function_name" class="form-control" placeholder="e.g. create_listing" required>
+    </div>
+    <button type="submit" class="btn btn-secondary">Invoke</button>
+  </form>
+
+  <h3>Mint Tokens</h3>
+  <form method="POST" action="/mint">
+    <div class="form-group">
+      <label>To Email or DID</label>
+      <input type="text" name="to_did" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Amount</label>
+      <input type="number" step="0.001" name="amount" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Mint Tokens</button>
+  </form>
+</div>
+</body>
+</html>

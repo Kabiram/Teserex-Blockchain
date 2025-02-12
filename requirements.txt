@@ -1,0 +1,13 @@
+Flask==2.2.5
+rocksdict==0.3.23
+stomp.py==8.1.0
+requests==2.31.0
+PyYAML==6.0.2
+wasmer==1.1.0
+wasmtime==29.0.0
+maturin==1.8.1 # for wasm
+pytest==8.3.4
+pycryptodome==3.21.0
+
+
+# Run "pip list" to see all packages in venv/

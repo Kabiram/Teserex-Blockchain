@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marketplace - TX Console</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/marketplace">Marketplace</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="/tx_console">TX Console</a></li>
+      <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container mt-4">
+  <h2>Marketplace Listings</h2>
+  <a href="/create_listing" class="btn btn-primary mb-3">Sell a Smart Contract / File</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Time Created</th>
+        <th>Expires</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Contract Hash</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for listing in listings %}
+      <tr class="{% if listing.status == 'sold' %}table-success{% elif listing.available_until < (now() | int) %}table-danger{% endif %}">
+        <td>{{ loop.index }}</td>
+        <td>{{ listing.listing_created_at | datetimeformat }}</td>
+        <td>{{ listing.available_until | datetimeformat }}</td>
+        <td>{{ listing.description }}</td>
+        <td>{{ listing.price }}</td>
+        <td>{{ listing.status }}</td>
+        <td><!-- In a real app, the contract hash would be here --></td>
+        <td>
+          {% if listing.status == 'active' %}
+          <form action="/buy_listing" method="POST" style="display:inline;">
+            <input type="hidden" name="listing_id" value="{{ listing.listing_id }}">
+            <!-- Provide the deployed market contract hash -->
+            <input type="hidden" name="contract_hash" value="3df7fc2d0fbfbd44798c356c35fd07f16dd0f91fd86e08c8b061cce2c55091f2">
+            <button type="submit" class="btn btn-success btn-sm">Buy</button>
+          </form>
+          {% elif listing.status == 'sold' and listing.buyer_did == session['did'] %}
+          <a href="/download_file?listing_id={{ listing.listing_id }}" class="btn btn-warning btn-sm">Download</a>
+          {% else %}
+          <button class="btn btn-secondary btn-sm" disabled>Sold</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

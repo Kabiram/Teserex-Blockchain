@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Transaction Search Result - TX Console</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h2>Search Transaction</h2>
+  {% if tx %}
+    <h4>Transaction Details for TXID: {{ txid }}</h4>
+    <table class="table table-bordered">
+      <tr><th>Timestamp</th><td>{{ tx.timestamp }}</td></tr>
+      <tr><th>Sender</th><td>{{ tx.sender }}</td></tr>
+      <tr><th>Receiver</th><td>{{ tx.receiver }}</td></tr>
+      <tr><th>Amount</th><td>{{ tx.amount }}</td></tr>
+      <tr><th>Fee</th><td>{{ tx.fee }}</td></tr>
+      <tr><th>TXID</th><td>{{ tx.txid }}</td></tr>
+    </table>
+  {% else %}
+    <div class="alert alert-danger">
+      No transaction found with TXID: {{ txid }}
+    </div>
+  {% endif %}
+  <a href="/tx_console" class="btn btn-secondary">Back to TX Console</a>
+</div>
+</body>
+</html>

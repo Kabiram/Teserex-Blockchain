@@ -1,0 +1,34 @@
+server:
+  host: "0.0.0.0"
+  port: 5000             # Flask dashboard/UI
+
+blockchain:
+  consensus: "PoA"
+  block_time_interval_seconds: 5
+
+network:
+  # If using STOMP, specify the broker details
+  stomp_host: "127.0.0.1"
+  stomp_port: 61613
+  # Example: Possibly store a list of known node IPs, if needed
+  bootstrapping_peers:
+    - "192.168.3.108"
+    - "192.168.3.211"
+
+gas:
+  base_fee: 1
+  message_byte_fee: 0.001
+  contract_complexity_fee: 0.5
+
+security:
+  encryption_key: "AES256Key-Example"   # Will be padded or truncated to 32 bytes in code
+  # For real usage, store in env var or vault
+
+# Levels of debug : CRITICAL (50) ERROR (40) WARNING (30) INFO (20) DEBUG (10) NOTSET (0)
+log_level: "INFO"
+
+smart_contracts:
+  wasm_runtime_path: "/usr/local/bin/wasmer"  # example
+
+
+
